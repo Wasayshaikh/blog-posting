@@ -1,6 +1,27 @@
 import React from 'react'
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 function Home() {
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  };
   return (
     <>
       <header className="bg-white shadow-md">
@@ -76,24 +97,25 @@ function Home() {
 
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Latest Articles</h2>
 
-            <div className="overflow-x-auto">
-              <div className="flex space-x-6 snap-x snap-mandatory overflow-x-scroll scrollbar-hide pb-4">
 
-                {/* <!-- Article Card 1 --> */}
-                <div className="min-w-[300px] max-w-sm bg-white rounded-lg shadow-md snap-start shrink-0">
-                  <img src="https://via.placeholder.com/300x180" alt="Article 1" className="w-full h-40 object-cover rounded-t-lg" />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Article Title 1</h3>
-                    <p className="text-sm text-gray-600 mt-1">Short summary of article 1.</p>
-                  </div>
-                </div>
 
-                {/* <!-- Article Card 2 --> */}
+
+            <div className="space-x-6 snap-x snap-mandatory overflow-x-scroll scrollbar-hide pb-4">
+
+              <Carousel responsive={responsive}>
                 <div className="min-w-[300px] max-w-sm bg-white rounded-lg shadow-md snap-start shrink-0">
                   <img src="https://via.placeholder.com/300x180" alt="Article 2" className="w-full h-40 object-cover rounded-t-lg" />
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-800">Article Title 2</h3>
                     <p className="text-sm text-gray-600 mt-1">Short summary of article 2.</p>
+                  </div>
+                </div>
+                {/* <!-- Article Card 3 --> */}
+                <div className="min-w-[300px] max-w-sm bg-white rounded-lg shadow-md snap-start shrink-0">
+                  <img src="https://via.placeholder.com/300x180" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
+                    <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
                   </div>
                 </div>
 
@@ -105,11 +127,31 @@ function Home() {
                     <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
                   </div>
                 </div>
+                {/* <!-- Article Card 3 --> */}
+                <div className="min-w-[300px] max-w-sm bg-white rounded-lg shadow-md snap-start shrink-0">
+                  <img src="https://via.placeholder.com/300x180" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
+                    <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
+                  </div>
+                </div>
 
-                {/* <!-- Add more cards as needed --> */}
 
-              </div>
+                {/* <!-- Article Card 3 --> */}
+                <div className="min-w-[300px] max-w-sm bg-white rounded-lg shadow-md snap-start shrink-0">
+                  <img src="https://via.placeholder.com/300x180" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
+                    <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
+                  </div>
+                </div>
+
+
+
+              </Carousel>
+
             </div>
+
 
           </div>
         </section>
