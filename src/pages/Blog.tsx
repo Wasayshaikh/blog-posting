@@ -1,18 +1,42 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Blog() {
     return (
         <>
 
             {/* <!-- Header (reused from main site) --> */}
-            <header className="bg-white shadow-md">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
-                    <div className="text-xl font-bold text-gray-800">MyLogo</div>
-                    <nav className="hidden md:flex gap-6 text-sm">
-                        <a href="#" className="text-gray-600 hover:text-blue-600">Home</a>
-                        <a href="#" className="text-gray-600 hover:text-blue-600">Blog</a>
-                        <a href="#" className="text-gray-600 hover:text-blue-600">About</a>
-                    </nav>
+            <header className="bg-gray-900 text-white shadow-md">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center h-16">
+
+                        {/* <!-- Left: Logo --> */}
+                        <div className="flex-shrink-0">
+                            <Link to={"/"} title='MyLogo' className="text-xl font-bold " >MyLogo</Link>
+
+                        </div>
+
+                        {/* <!-- Center: Navigation Links --> */}
+                        <nav className="hidden md:flex space-x-8">
+                            <Link to={"/"}  >Home</Link>
+                            <Link to={"/blog"}  >Blog</Link>
+                            <Link to={"/"}  >About</Link>
+                            <Link to={"/blog"} >Contact</Link>
+
+                        </nav>
+
+                        {/* <!-- Right: Login Icon --> */}
+                        <div className="flex-shrink-0">
+                            <Link to={"/"} title='Home'>
+                                {/* <!-- Example icon (you can use your own) --> */}
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5.121 17.804A6.978 6.978 0 0112 15c1.657 0 3.182.57 4.379 1.525M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path d="M19 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" />
+                                </svg>
+                            </Link>
+                        </div>
+
+                    </div>
                 </div>
             </header>
 
@@ -37,8 +61,8 @@ function Blog() {
                     <p>
                         First, we start with a responsive layout that adapts well to all devices. Using Tailwind’s utility classes, we can manage spacing, typography, and images with ease.
                     </p>
+                    <img src="/images/sheet-music-8463988_960_720.jpg" alt="Blog Image" className="w-full h-40 object-cover" />
 
-                    <h2 className="text-2xl font-semibold mt-8">Adding Images in Content</h2>
                     <p>
                         You can place images in between your text to illustrate ideas, showcase products, or break up long sections of content.
                     </p>
