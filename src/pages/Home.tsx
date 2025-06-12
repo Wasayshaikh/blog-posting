@@ -1,56 +1,54 @@
-import React from 'react'
-import Carousel from 'react-multi-carousel';
+import Slider from "react-slick";
 import 'react-multi-carousel/lib/styles.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Link } from 'react-router-dom';
+
 
 function Home() {
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1
-    }
+
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    swipe: true,
+    draggable: true,
+    touchMove: true,
   };
   return (
+
     <>
-      <header className="bg-white shadow-md">
+      <header className="bg-gray-900 text-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
 
             {/* <!-- Left: Logo --> */}
             <div className="flex-shrink-0">
-              <a href="#" className="text-xl font-bold text-gray-800">MyLogo</a>
+              <Link to={"/"} title='MyLogo' className="text-xl font-bold " >MyLogo</Link>
+
             </div>
 
             {/* <!-- Center: Navigation Links --> */}
             <nav className="hidden md:flex space-x-8">
-              <a href="#" className="text-gray-700 hover:text-blue-600">Home</a>
-              <a href="#" className="text-gray-700 hover:text-blue-600">About</a>
-              <a href="#" className="text-gray-700 hover:text-blue-600">Services</a>
-              <a href="#" className="text-gray-700 hover:text-blue-600">Contact</a>
+              <Link to={"/"}  >Home</Link>
+              <Link to={"/blog"}  >Blog</Link>
+              <Link to={"/"}  >About</Link>
+              <Link to={"/blog"} >Contact</Link>
+
             </nav>
 
             {/* <!-- Right: Login Icon --> */}
             <div className="flex-shrink-0">
-              <a href="#" className="text-gray-700 hover:text-blue-600">
+              <Link to={"/"} title='Home'>
                 {/* <!-- Example icon (you can use your own) --> */}
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
                   viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M5.121 17.804A6.978 6.978 0 0112 15c1.657 0 3.182.57 4.379 1.525M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path d="M19 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" />
                 </svg>
-              </a>
+              </Link>
             </div>
 
           </div>
@@ -61,7 +59,7 @@ function Home() {
 
           {/* <!-- Left: Large Blog Card --> */}
           <div className="md:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
-            <img src="https://via.placeholder.com/800x400" alt="Blog Image" className="w-full h-64 object-cover" />
+            <img src="/images/premium_photo-1720744786849-a7412d24ffbf.avif" alt="Blog Image" className="w-full h-[380px] object-cover" />
             <div className="p-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-2">Main Blog Title</h2>
               <p className="text-gray-600">This is a short description of the main blog post. It takes up more space and gives a preview of the featured content.</p>
@@ -73,7 +71,7 @@ function Home() {
 
             {/* <!-- Top Right Blog --> */}
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/400x200" alt="Blog Image" className="w-full h-40 object-cover" />
+              <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Blog Image" className="w-full h-40 object-cover" />
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-gray-800 mb-1">Blog Title 1</h3>
                 <p className="text-gray-600 text-sm">Short description of the first right-side blog post.</p>
@@ -82,7 +80,7 @@ function Home() {
 
             {/* <!-- Bottom Right Blog --> */}
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/400x200" alt="Blog Image" className="w-full h-40 object-cover" />
+              <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Blog Image" className="w-full h-40 object-cover" />
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-gray-800 mb-1">Blog Title 2</h3>
                 <p className="text-gray-600 text-sm">Short description of the second right-side blog post.</p>
@@ -95,60 +93,57 @@ function Home() {
         <section className="mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Latest Articles</h2>
+            <h2 className="text-2xl font-bold text-gray-800 border-1 border-gray-900 border-x-0 py-2 mb-6">Latest Articles</h2>
 
-
-
-
-            <div className="space-x-6 snap-x snap-mandatory overflow-x-scroll scrollbar-hide pb-4">
-
-              <Carousel responsive={responsive}>
-                <div className="min-w-[300px] max-w-sm bg-white rounded-lg shadow-md snap-start shrink-0">
-                  <img src="https://via.placeholder.com/300x180" alt="Article 2" className="w-full h-40 object-cover rounded-t-lg" />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Article Title 2</h3>
-                    <p className="text-sm text-gray-600 mt-1">Short summary of article 2.</p>
-                  </div>
-                </div>
-                {/* <!-- Article Card 3 --> */}
-                <div className="min-w-[300px] max-w-sm bg-white rounded-lg shadow-md snap-start shrink-0">
-                  <img src="https://via.placeholder.com/300x180" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
+            <Slider {...settings}>
+              {/* <!-- Article Card 1 --> */}
+              <div className='p-3'>
+                <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
+                  <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
                     <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
                   </div>
                 </div>
+              </div>
 
-                {/* <!-- Article Card 3 --> */}
-                <div className="min-w-[300px] max-w-sm bg-white rounded-lg shadow-md snap-start shrink-0">
-                  <img src="https://via.placeholder.com/300x180" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
+              {/* <!-- Article Card 2 --> */}
+              <div className='p-3'>
+                <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
+                  <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
                     <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
                   </div>
                 </div>
-                {/* <!-- Article Card 3 --> */}
-                <div className="min-w-[300px] max-w-sm bg-white rounded-lg shadow-md snap-start shrink-0">
-                  <img src="https://via.placeholder.com/300x180" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
+              </div>
+
+              {/* <!-- Article Card 3 --> */}
+              <div className='p-3'>
+                <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
+                  <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
                     <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
                   </div>
                 </div>
+              </div>
 
-
-                {/* <!-- Article Card 3 --> */}
-                <div className="min-w-[300px] max-w-sm bg-white rounded-lg shadow-md snap-start shrink-0">
-                  <img src="https://via.placeholder.com/300x180" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
+              {/* <!-- Article Card 3 --> */}
+              <div className='p-3'>
+                <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
+                  <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
                     <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
                   </div>
                 </div>
+              </div>
+            </Slider>
 
 
+            <div className="">
 
-              </Carousel>
 
             </div>
 
@@ -160,13 +155,13 @@ function Home() {
         <section className="mt-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">Trending Articles</h2>
+            <h2 className="text-2xl font-bold text-gray-800 border-1 border-gray-900 border-x-0 py-2 mb-6">Trending Articles</h2>
 
             <div className="space-y-6">
 
               {/* <!-- Trending Article 1 --> */}
-              <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row">
-                <img src="https://via.placeholder.com/300x200" alt="Trending 1" className="w-full md:w-1/3 h-48 object-cover" />
+              <div className="bg-white rounded-lg hover:shadow-md overflow-hidden flex flex-col md:flex-row">
+                <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Trending 1" className="w-full md:w-1/3 h-48 object-cover" />
                 <div className="p-6 flex flex-col justify-center">
                   <h3 className="text-xl font-semibold text-gray-800">Trending Article Title 1</h3>
                   <p className="text-gray-600 mt-2">Short summary or snippet of trending article 1 to spark interest.</p>
@@ -174,8 +169,8 @@ function Home() {
               </div>
 
               {/* <!-- Trending Article 2 --> */}
-              <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row">
-                <img src="https://via.placeholder.com/300x200" alt="Trending 2" className="w-full md:w-1/3 h-48 object-cover" />
+              <div className="bg-white rounded-lg hover:shadow-md overflow-hidden flex flex-col md:flex-row">
+                <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Trending 2" className="w-full md:w-1/3 h-48 object-cover" />
                 <div className="p-6 flex flex-col justify-center">
                   <h3 className="text-xl font-semibold text-gray-800">Trending Article Title 2</h3>
                   <p className="text-gray-600 mt-2">Short summary or snippet of trending article 2 to spark interest.</p>
@@ -183,8 +178,8 @@ function Home() {
               </div>
 
               {/* <!-- Trending Article 3 --> */}
-              <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row">
-                <img src="https://via.placeholder.com/300x200" alt="Trending 3" className="w-full md:w-1/3 h-48 object-cover" />
+              <div className="bg-white rounded-lg hover:shadow-md overflow-hidden flex flex-col md:flex-row">
+                <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Trending 3" className="w-full md:w-1/3 h-48 object-cover" />
                 <div className="p-6 flex flex-col justify-center">
                   <h3 className="text-xl font-semibold text-gray-800">Trending Article Title 3</h3>
                   <p className="text-gray-600 mt-2">Short summary or snippet of trending article 3 to spark interest.</p>
