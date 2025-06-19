@@ -41,7 +41,7 @@ function Home() {
 
             {/* <!-- Right: Login Icon --> */}
             <div className="flex-shrink-0">
-              <Link to={"/"} title='Home'>
+              <Link to={"/login"} title='Home'>
                 {/* <!-- Example icon (you can use your own) --> */}
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
                   viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
