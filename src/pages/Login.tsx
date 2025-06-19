@@ -1,7 +1,18 @@
+import { useDispatch, useSelector } from "react-redux"
+import { login } from "../redux/slices/AuthSlice";
+import type { RootState } from "../redux/store";
+import { Link } from "react-router-dom";
+
 function Login() {
+   const dispatch = useDispatch<any >();
+    // const auth_check = useSelector(auth)
+    // console.log(auth_check)
+     const auth = useSelector((state: RootState) => state.auth);
+     console.log(auth)
     return (
 
         <div className="min-h-screen flex items-center justify-center">
+            <button onClick={()=>{dispatch(login({email:"abc@abc.abc",password:"Admin!2345"}))}}>Click</button>
             <div className="bg-white/90 p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Login</h2>
 
@@ -24,7 +35,7 @@ function Login() {
                     </button>
                     <p className="text-center text-sm text-gray-600 mt-6">
                         Don't have an account?
-                        <a href="/register" className="text-gray-800 font-medium hover:underline"> Register</a>
+                        <Link to="/register" className="text-gray-800 font-medium hover:underline"> Register</Link>
                     </p>
                 </form>
             </div>
