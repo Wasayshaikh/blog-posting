@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { login } from "../redux/slices/AuthSlice";
+import { login } from "../redux/thunkFunctions/Auth";
 import type { RootState } from "../redux/store";
 import { Link } from "react-router-dom";
 
@@ -12,7 +12,7 @@ function Login() {
     return (
 
         <div className="min-h-screen flex items-center justify-center">
-            <button onClick={()=>{dispatch(login({email:"abc@abc.abc",password:"Admin!2345"}))}}>Click</button>
+            <button onClick={()=>{dispatch(login({email:"abc@abc.abc",password:"Admin!23456"}))}}>Click</button>
             <div className="bg-white/90 p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Login</h2>
 
