@@ -9,7 +9,8 @@ type initialState = {
     token: string | null,
     status: string | null | [],
     error: string | Array<String | Object> | null | object,
-    message: string | null
+    message: string | null,
+    isLogged:boolean
 }
 
 const authSlice = createSlice({
@@ -18,7 +19,8 @@ const authSlice = createSlice({
         user: null,
         token: null,
         status: null,
-        error: null
+        error: null,
+        isLogged: false
     } as initialState,
     reducers: {},
     extraReducers(builder) {
@@ -29,7 +31,8 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action: PayloadAction<AuthPayload>) => {
                 state.status = 'Success';
                 state.user = action.payload.user;
-                state.token = action.payload.token
+                state.token = action.payload.token;
+                state.isLogged= true
             })
             .addCase(login.rejected, (state, action) => {
                 state.status = 'failed';
@@ -47,7 +50,8 @@ const authSlice = createSlice({
             .addCase(register.fulfilled, (state, action: PayloadAction<AuthPayload>) => {
                 state.status = 'Success';
                 state.user = action.payload.user;
-                state.token = action.payload.token
+                state.token = action.payload.token;
+                state.isLogged= true
             })
             .addCase(register.rejected, (state, action) => {
                 state.status = 'failed';
@@ -65,7 +69,8 @@ const authSlice = createSlice({
             .addCase(logout.fulfilled, (state) => {
                 state.status = 'Success';
                 state.user = null;
-                state.token = null
+                state.token = null;
+                state.isLogged= false
             })
             .addCase(logout.rejected, (state, action) => {
                 state.status = 'failed';
