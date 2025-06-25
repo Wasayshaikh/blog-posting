@@ -3,6 +3,7 @@ import 'react-multi-carousel/lib/styles.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from 'react-router-dom';
+import Header from "../components/Header";
 
 
 function Home() {
@@ -20,76 +21,43 @@ function Home() {
   return (
 
     <>
-      <header className="bg-gray-900 text-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-
-            {/* <!-- Left: Logo --> */}
-            <div className="flex-shrink-0">
-              <Link to={"/"} title='MyLogo' className="text-xl font-bold " >MyLogo</Link>
-
-            </div>
-
-            {/* <!-- Center: Navigation Links --> */}
-            <nav className="hidden md:flex space-x-8">
-              <Link to={"/"}  >Home</Link>
-              <Link to={"/blog"}  >Blog</Link>
-              <Link to={"/"}  >About</Link>
-              <Link to={"/blog"} >Contact</Link>
-
-            </nav>
-
-            {/* <!-- Right: Login Icon --> */}
-            <div className="flex-shrink-0">
-              <Link to={"/login"} title='Home'>
-                {/* <!-- Example icon (you can use your own) --> */}
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                  viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5.121 17.804A6.978 6.978 0 0112 15c1.657 0 3.182.57 4.379 1.525M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path d="M19 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" />
-                </svg>
-              </Link>
-            </div>
-
-          </div>
-        </div>
-      </header>
+     <Header />
       <main className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-6">
 
-          {/* <!-- Left: Large Blog Card --> */}
+         
           <div className="md:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
             <img src="/images/premium_photo-1720744786849-a7412d24ffbf.avif" alt="Blog Image" className="w-full h-[380px] object-cover" />
             <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Main Blog Title</h2>
+              <Link to={"/blog"} ><h2 className="text-2xl font-bold text-gray-800 mb-2">Main Blog Title</h2></Link>
               <p className="text-gray-600">This is a short description of the main blog post. It takes up more space and gives a preview of the featured content.</p>
             </div>
           </div>
 
-          {/* <!-- Right: Two Stacked Smaller Blog Cards --> */}
+         
           <div className="flex flex-col gap-6">
 
-            {/* <!-- Top Right Blog --> */}
+        
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Blog Image" className="w-full h-40 object-cover" />
               <div className="p-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-1">Blog Title 1</h3>
+                <Link to={"/blog"}><h3 className="text-xl font-semibold text-gray-800 mb-1">Blog Title 1</h3></Link>
                 <p className="text-gray-600 text-sm">Short description of the first right-side blog post.</p>
               </div>
             </div>
 
-            {/* <!-- Bottom Right Blog --> */}
+          
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Blog Image" className="w-full h-40 object-cover" />
               <div className="p-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-1">Blog Title 2</h3>
+                  <Link to={"/blog"}><h3 className="text-xl font-semibold text-gray-800 mb-1">Blog Title 2</h3></Link>
                 <p className="text-gray-600 text-sm">Short description of the second right-side blog post.</p>
               </div>
             </div>
 
           </div>
         </div>
-        {/* <!-- Latest Articles Slider Section --> */}
+     
         <section className="mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -101,13 +69,24 @@ function Home() {
                 <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
                   <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
                   <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
+                    <Link to={"/blog"}><h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3></Link>
                     <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
                   </div>
                 </div>
               </div>
 
-              {/* <!-- Article Card 2 --> */}
+            
+              <div className='p-3'>
+                <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
+                  <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
+                  <div className="p-4">
+                      <Link to={"/blog"}><h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3></Link>
+                    <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
+                  </div>
+                </div>
+              </div>
+
+           
               <div className='p-3'>
                 <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
                   <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
@@ -118,23 +97,12 @@ function Home() {
                 </div>
               </div>
 
-              {/* <!-- Article Card 3 --> */}
+            
               <div className='p-3'>
                 <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
                   <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
                   <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
-                    <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* <!-- Article Card 3 --> */}
-              <div className='p-3'>
-                <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
-                  <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
+                    <Link to={"/blog"}><h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3></Link>
                     <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
                   </div>
                 </div>
@@ -163,7 +131,7 @@ function Home() {
               <div className="bg-white rounded-lg hover:shadow-md overflow-hidden flex flex-col md:flex-row">
                 <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Trending 1" className="w-full md:w-1/3 h-48 object-cover" />
                 <div className="p-6 flex flex-col justify-center">
-                  <h3 className="text-xl font-semibold text-gray-800">Trending Article Title 1</h3>
+                  <Link to={"/blog"}><h3 className="text-xl font-semibold text-gray-800">Trending Article Title 1</h3></Link>
                   <p className="text-gray-600 mt-2">Short summary or snippet of trending article 1 to spark interest.</p>
                 </div>
               </div>
@@ -172,7 +140,7 @@ function Home() {
               <div className="bg-white rounded-lg hover:shadow-md overflow-hidden flex flex-col md:flex-row">
                 <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Trending 2" className="w-full md:w-1/3 h-48 object-cover" />
                 <div className="p-6 flex flex-col justify-center">
-                  <h3 className="text-xl font-semibold text-gray-800">Trending Article Title 2</h3>
+                   <Link to={"/blog"}><h3 className="text-xl font-semibold text-gray-800">Trending Article Title 2</h3></Link>
                   <p className="text-gray-600 mt-2">Short summary or snippet of trending article 2 to spark interest.</p>
                 </div>
               </div>
@@ -181,7 +149,7 @@ function Home() {
               <div className="bg-white rounded-lg hover:shadow-md overflow-hidden flex flex-col md:flex-row">
                 <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Trending 3" className="w-full md:w-1/3 h-48 object-cover" />
                 <div className="p-6 flex flex-col justify-center">
-                  <h3 className="text-xl font-semibold text-gray-800">Trending Article Title 3</h3>
+                  <Link to={"/blog"}><h3 className="text-xl font-semibold text-gray-800">Trending Article Title 3</h3></Link> 
                   <p className="text-gray-600 mt-2">Short summary or snippet of trending article 3 to spark interest.</p>
                 </div>
               </div>
