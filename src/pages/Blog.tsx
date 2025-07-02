@@ -1,8 +1,90 @@
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Header from '../components/Header'
+import { useEffect, useState } from 'react';
+import { getSinglePost } from '../redux/thunkFunctions/Posts';
+import { getPostComment, putPostComment } from '../redux/thunkFunctions/Comments';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../redux/store';
 
 function Blog() {
+    const isLogged = useSelector((state: RootState) => state.auth.isLogged);
+    const logged_username = useSelector((state: RootState) => state.auth.user?.username)
+    const token = useSelector((state:RootState)=> state.auth.token);
+    const { slug } = useParams();
+    const [post, setPost] = useState(null);
+    const [comments, setComments] = useState<Array<object>|null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [commentsLoading, setCommentsLoading] = useState(true);
+    const [CommentsError, setCommentsError] = useState<string | null>(null);
+    useEffect(() => {
+        const getPost = async () => {
+            try {
+                const data = await getSinglePost(slug);
+                setPost(data || data); // Adjust based on your API response structure
+            } catch (err: any) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getPost();
+        // getComments();
+    }, [])
+    const [formData, setFormData] = useState<{content:string,user_name:string|undefined,post_slug:string}>({
+        content: "",
+        user_name: logged_username,
+        post_slug: ""
+
+    });
+    const getComments = async () => {
+        try {
+            const data = await getPostComment(slug);
+            setComments(data.comments); // Adjust based on your API response structure
+        } catch (err: any) {
+            setCommentsError(err.message);
+        } finally {
+            setCommentsLoading(false);
+        }
+        console.log(comments)
+    };
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        formData.post_slug = post?.data.authors.slug;
+        console.log(formData)
+        // const result = await dispatch(login(formData));
+        // email: "abc@abc.abc", password: "Admin!23456" }
+        // const result = dispatch(register(formData))
+        // if (register.fulfilled.match(result)) {
+        //     navigate('/');
+        // }
+        const data = await putPostComment(formData,token);
+        console.log(data)
+        if (data) {
+            setComments((prev) => [...prev, data.comments]); 
+            setFormData({
+            content: "",
+            user_name: logged_username,
+            post_slug: ""
+        });
+        }
+
+
+    };
+    if (loading) return (<><Header /><p>Loading posts...</p></>);
+    if (error) return (<><Header /><p>Error: {error}</p></>);
+
+
     return (
+
         <>
 
 
@@ -15,13 +97,13 @@ function Blog() {
                 <img src="/images/sheet-music-8463988_960_720.jpg" className="w-full rounded-lg mb-6 object-cover" />
 
 
-                <h1 className="text-3xl font-bold mb-2">The Journey of Creating a Tailwind Blog</h1>
-                <div className="text-sm text-gray-500 mb-10">By <span className="font-medium text-gray-700">John Doe</span> • June 2, 2025</div>
+                <h1 className="text-3xl font-bold mb-2">{post?.data.authors.metadata.title}</h1>
+                <div className="text-sm text-gray-500 mb-10">By <span className="font-medium text-gray-700">{post.data.authors.author}</span> • {post.data.authors.publish_date}</div>
 
 
                 <article className="space-y-6 text-lg leading-relaxed">
                     <p>
-                        Tailwind CSS allows developers to build beautifully designed components quickly. In this article, we’ll explore how to structure a single blog page with multiple images and sections.
+                        {post?.data.authors.metadata.content}
                     </p>
 
                     <img src="/images/sheet-music-8463988_960_720.jpg" className="w-full rounded-lg" />
@@ -58,28 +140,50 @@ function Blog() {
                 <div className="mt-16 border-t pt-10">
                     <h2 className="text-2xl font-bold mb-6">Comments</h2>
 
-                    {/* Existing Comments */}
-                    <div className="space-y-6 mb-10">
-                        <div className="border rounded-lg p-4">
-                            <div className="text-sm text-gray-500 mb-2">Jane Smith • June 18, 2025</div>
-                            <p className="text-gray-800">Really enjoyed this post! Tailwind makes layout so simple.</p>
-                        </div>
-                        <div className="border rounded-lg p-4">
-                            <div className="text-sm text-gray-500 mb-2">Mike Johnson • June 19, 2025</div>
-                            <p className="text-gray-800">Looking forward to implementing this structure in my blog. Thanks!</p>
-                        </div>
-                    </div>
 
+                    <div className="space-y-6 mb-10">
+
+                        {comments == null ? (<>   <button
+                            onClick={() => { getComments() }}
+                            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+                        >
+                            Get Comment
+                        </button></>) : (
+                            comments.map((comment: any) => (
+                                <div key={comment.id} className="border rounded-lg p-4">
+                                    <div className="text-sm text-gray-500 mb-2">{comment.users.name} • {
+                                        new Date(comment.created_at).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                        })}</div>
+                                    <p className="text-gray-800">{comment.content}</p>
+                                </div>)
+                            )
+                        )}
+
+
+                    </div>
+                    {/* <button onClick={() => { getComments() }}> get Comments</button> */}
 
                     <h3 className="text-xl font-semibold mb-4">Leave a Comment</h3>
-                    <form className="space-y-4">
+
+                    {!isLogged ? (<Link to={"/login"}><button
+                        type="submit"
+                        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+                    >
+                        Login to Comment
+                    </button></Link>) : (<form className="space-y-4" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-1">Your Comment</label>
                             <textarea
-                                name="comment"
+                                onChange={handleChange}
+                                name="content"
+                                value={formData.content}
                                 rows={4}
                                 className="w-full border rounded-lg p-3 resize-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                 placeholder="Write your comment here..."
+                                required
                             ></textarea>
                         </div>
                         <button
@@ -88,7 +192,10 @@ function Blog() {
                         >
                             Post Comment
                         </button>
-                    </form>
+                    </form>)
+
+                    }
+
                 </div>
 
 
