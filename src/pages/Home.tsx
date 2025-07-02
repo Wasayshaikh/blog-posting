@@ -4,9 +4,45 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from 'react-router-dom';
 import Header from "../components/Header";
+import { useEffect, useState } from "react";
+import { getNewPost, getTrendingPost } from "../redux/thunkFunctions/Posts";
 
 
 function Home() {
+  const [posts, setPosts] = useState<{status:number, data:{posts:Array<{slug:string,title:string,content:string}>}} | null>(null);
+  const [newPosts, setNewPosts] = useState<{status:number, data:{posts:Array<Object>}} | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [newLoading, setNewLoading] = useState(true);
+  const [newError, setNewError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTrending = async () => {
+      try {
+        const data = await getTrendingPost();
+        setPosts(data.posts || data); // Adjust based on your API response structure
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchNewPost = async () => {
+      try {
+        const data = await getNewPost();
+        setNewPosts(data.posts || data); // Adjust based on your API response structure
+      } catch (err: any) {
+        setNewError(err.message);
+      } finally {
+        setNewLoading(false);
+      }
+    };
+
+    fetchNewPost();
+    fetchTrending();
+  }, []);
+  console.log(newPosts)
 
   const settings = {
     dots: true,
@@ -17,47 +53,57 @@ function Home() {
     swipe: true,
     draggable: true,
     touchMove: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
+  if (loading || newLoading) return (<><Header /><p>Loading posts...</p></>);
+  if (error || newError) return (<><Header /><p>Error: {error}</p></>);
   return (
 
     <>
-     <Header />
+      <Header />
       <main className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-6">
 
-         
+
           <div className="md:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
             <img src="/images/premium_photo-1720744786849-a7412d24ffbf.avif" alt="Blog Image" className="w-full h-[380px] object-cover" />
             <div className="p-6">
-              <Link to={"/blog"} ><h2 className="text-2xl font-bold text-gray-800 mb-2">Main Blog Title</h2></Link>
-              <p className="text-gray-600">This is a short description of the main blog post. It takes up more space and gives a preview of the featured content.</p>
+              <Link to={'/blog/'+posts?.data.posts[0].slug} ><h2 className="text-2xl font-bold text-gray-800 mb-2">  {posts?.data.posts[0].title}</h2></Link>
+              <p className="text-gray-600 line-clamp-2">{posts?.data.posts[0].content}</p>
             </div>
           </div>
 
-         
+
           <div className="flex flex-col gap-6">
 
-        
+
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Blog Image" className="w-full h-40 object-cover" />
               <div className="p-4">
-                <Link to={"/blog"}><h3 className="text-xl font-semibold text-gray-800 mb-1">Blog Title 1</h3></Link>
-                <p className="text-gray-600 text-sm">Short description of the first right-side blog post.</p>
+                <Link to={'/blog/'+posts?.data.posts[1].title}><h3 className="text-xl font-semibold text-gray-800 mb-1">{posts?.data.posts[1].title}</h3></Link>
+                <p className="text-gray-600 text-sm line-clamp-1">{posts?.data.posts[1].title}</p>
               </div>
             </div>
 
-          
+
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Blog Image" className="w-full h-40 object-cover" />
               <div className="p-4">
-                  <Link to={"/blog"}><h3 className="text-xl font-semibold text-gray-800 mb-1">Blog Title 2</h3></Link>
-                <p className="text-gray-600 text-sm">Short description of the second right-side blog post.</p>
+                <Link to={'/blog/'+posts?.data.posts[2].slug}><h3 className="text-xl font-semibold text-gray-800 mb-1">{posts?.data.posts[2].title}</h3></Link>
+                <p className="text-gray-600 text-sm line-clamp-1">{posts?.data.posts[2].content}</p>
               </div>
             </div>
 
           </div>
         </div>
-     
+
         <section className="mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -65,48 +111,22 @@ function Home() {
 
             <Slider {...settings}>
               {/* <!-- Article Card 1 --> */}
-              <div className='p-3'>
+
+                {/* <!-- Trending Article 1 --> */}
+              {newPosts?.data.posts.map((post: any) => (
+               <div className='p-3' key={post.id}>
                 <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
                   <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
                   <div className="p-4">
-                    <Link to={"/blog"}><h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3></Link>
-                    <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
+                    <Link to={'/blog/'+post.slug}><h3 className="text-lg font-semibold text-gray-800">{post.title}</h3></Link>
+                    <p className="text-sm text-gray-600 mt-1 line-clamp-1">{post.content}</p>
                   </div>
                 </div>
               </div>
 
-            
-              <div className='p-3'>
-                <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
-                  <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
-                  <div className="p-4">
-                      <Link to={"/blog"}><h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3></Link>
-                    <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
-                  </div>
-                </div>
-              </div>
 
-           
-              <div className='p-3'>
-                <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
-                  <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3>
-                    <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
-                  </div>
-                </div>
-              </div>
-
-            
-              <div className='p-3'>
-                <div className="min-w-[300px] max-w-sm bg-white rounded-lg hover:shadow-md ">
-                  <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Article 3" className="w-full h-40 object-cover rounded-t-lg" />
-                  <div className="p-4">
-                    <Link to={"/blog"}><h3 className="text-lg font-semibold text-gray-800">Article Title 3</h3></Link>
-                    <p className="text-sm text-gray-600 mt-1">Short summary of article 3.</p>
-                  </div>
-                </div>
-              </div>
+              ))}
+             
             </Slider>
 
 
@@ -128,31 +148,17 @@ function Home() {
             <div className="space-y-6">
 
               {/* <!-- Trending Article 1 --> */}
-              <div className="bg-white rounded-lg hover:shadow-md overflow-hidden flex flex-col md:flex-row">
-                <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Trending 1" className="w-full md:w-1/3 h-48 object-cover" />
-                <div className="p-6 flex flex-col justify-center">
-                  <Link to={"/blog"}><h3 className="text-xl font-semibold text-gray-800">Trending Article Title 1</h3></Link>
-                  <p className="text-gray-600 mt-2">Short summary or snippet of trending article 1 to spark interest.</p>
+              {posts?.data.posts.map((post: any) => (
+                <div key={post.id} className="bg-white rounded-lg hover:shadow-md overflow-hidden flex flex-col md:flex-row">
+                  <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Trending 1" className="w-full md:w-[200px] h-48 object-cover object-bottom-left" />
+                  <div className="p-6 flex flex-col justify-center">
+                    <Link to={'/blog/'+post.slug}><h3 className="text-xl font-semibold text-gray-800">{post.title}</h3></Link>
+                    <p className="text-gray-600 mt-2 line-clamp-1">{post.content}</p>
+                  </div>
                 </div>
-              </div>
 
-              {/* <!-- Trending Article 2 --> */}
-              <div className="bg-white rounded-lg hover:shadow-md overflow-hidden flex flex-col md:flex-row">
-                <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Trending 2" className="w-full md:w-1/3 h-48 object-cover" />
-                <div className="p-6 flex flex-col justify-center">
-                   <Link to={"/blog"}><h3 className="text-xl font-semibold text-gray-800">Trending Article Title 2</h3></Link>
-                  <p className="text-gray-600 mt-2">Short summary or snippet of trending article 2 to spark interest.</p>
-                </div>
-              </div>
+              ))}
 
-              {/* <!-- Trending Article 3 --> */}
-              <div className="bg-white rounded-lg hover:shadow-md overflow-hidden flex flex-col md:flex-row">
-                <img src="/images/photo-1551103782-8ab07afd45c1.avif" alt="Trending 3" className="w-full md:w-1/3 h-48 object-cover" />
-                <div className="p-6 flex flex-col justify-center">
-                  <Link to={"/blog"}><h3 className="text-xl font-semibold text-gray-800">Trending Article Title 3</h3></Link> 
-                  <p className="text-gray-600 mt-2">Short summary or snippet of trending article 3 to spark interest.</p>
-                </div>
-              </div>
 
             </div>
           </div>
