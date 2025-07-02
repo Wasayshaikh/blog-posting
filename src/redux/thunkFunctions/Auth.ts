@@ -27,7 +27,7 @@ type LogoutCredentials={token:string}
 
 export const login = createAsyncThunk<AuthPayload, LoginCredentials,{ rejectValue: AuthError }>("auth/login", async (credentials: { email: string, password: string }, thunkAPI) => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/login", {
+        const response = await fetch("https://laravel-api.wasayshaikh.com/api/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(credentials)
@@ -46,7 +46,7 @@ export const login = createAsyncThunk<AuthPayload, LoginCredentials,{ rejectValu
 
 export const register = createAsyncThunk<AuthPayload, RegisterCredentials,{ rejectValue: AuthError }>("auth/register", async (credentials: { email: string, password: string, username: string, name:string }, thunkAPI) => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/register", {
+            const response = await fetch("https://laravel-api.wasayshaikh.com/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(credentials)
@@ -64,9 +64,11 @@ export const register = createAsyncThunk<AuthPayload, RegisterCredentials,{ reje
     })
 export const logout = createAsyncThunk<LogoutPayload, LogoutCredentials,{ rejectValue: AuthError }>("auth/logout", async (credentials: { token: string }, thunkAPI) => {
     try {
-        const response = await fetch("link", {
+        const response = await fetch("https://laravel-api.wasayshaikh.com/api/logout", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",
+            "Authorization": `Bearer ${credentials.token}`
+            },
             body: JSON.stringify(credentials)
         });
         if (!response.ok) {
@@ -74,6 +76,7 @@ export const logout = createAsyncThunk<LogoutPayload, LogoutCredentials,{ reject
             return thunkAPI.rejectWithValue(errorData);
         }
         const data = await response.json();
+        console.log(data)
         return data;
     } catch (error: any) {
         return thunkAPI.rejectWithValue({ message: error.message });
