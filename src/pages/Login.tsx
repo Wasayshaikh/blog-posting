@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { login } from "../redux/thunkFunctions/Auth";
 import type { RootState } from "../redux/store";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function Login() {
@@ -26,16 +26,17 @@ function Login() {
         console.log(formData)
         // const result = await dispatch(login(formData));
         // email: "abc@abc.abc", password: "Admin!23456" }
-            const result = dispatch(login(formData))
+        const result = await dispatch(login(formData));
+
         if (login.fulfilled.match(result)) {
-            navigate('/');}
-        
+            navigate('/');
+        }
     };
 
     return (
 
         <div className="min-h-screen flex items-center justify-center">
-           
+
             <div className="bg-white/90 p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Login</h2>
 
