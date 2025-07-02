@@ -1,7 +1,7 @@
 import { createTransform } from 'redux-persist';
 
 //const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 hours
-const EXPIRATION_TIME = 10 * 1000; // 24 hours
+const EXPIRATION_TIME = 1000 * 1000; // 24 hours
 
 export const expireTransform = createTransform(
   // Called when saving to storage
