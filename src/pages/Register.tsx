@@ -38,7 +38,7 @@ function Register() {
             <div className="bg-white/90 p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Login</h2>
 
-                <form action="#" method="POST" className="space-y-4">
+                <form action="#" method="POST" className="space-y-4" onSubmit={handleSubmit}>
                     <div>
                         <label className="block text-sm text-gray-700 mb-1">Email</label>
                         <input type="email"  name="email"  onChange={handleChange} required
