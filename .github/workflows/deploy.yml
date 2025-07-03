@@ -3,26 +3,26 @@ name: Deploy Vite App via SSH
 on:
   push:
     branches:
-      - main  # or your deployment branch
+      - main  # Change if your deploy branch is different
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build the app
+      - name: Build Vite app
         run: npm run build
 
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          printf "%s" "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          printf "%s" "${{ secrets.HOSTINGER_SECRET }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
