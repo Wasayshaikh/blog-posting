@@ -21,26 +21,39 @@ jobs:
 
       - name: Setup SSH
         run: |
+          set -euxo pipefail
+
           mkdir -p ~/.ssh
+
+          echo "Writing SSH key to file..."
           cat <<EOF > ~/.ssh/id_rsa
           ${{ secrets.SSH_PRIVATE_KEY }}
           EOF
+
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
+
+          echo "Scanning and adding SSH host key..."
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Check SSH key file
+          echo "SSH setup completed."
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Verify SSH key
         run: |
-          echo "Key file type:"
+          echo "Verifying SSH key format..."
           file ~/.ssh/id_rsa
-          echo "Key preview:"
+          echo "SSH key head preview:"
           head -n 5 ~/.ssh/id_rsa
 
       - name: Test SSH connection
         run: |
+          echo "Testing SSH connection..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo SSH connection success"
         continue-on-error: true
 
       - name: Deploy via rsync
         run: |
+          echo "Starting rsync deployment..."
           rsync -avz -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/u694311714/domains/wasayshaikh.com/public_html/subdomains/react/
