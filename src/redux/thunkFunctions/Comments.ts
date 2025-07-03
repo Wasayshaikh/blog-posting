@@ -1,4 +1,4 @@
-export const getPostComment = async (slug: string) => {
+export const getPostComment = async (slug: string|undefined) => {
     try {
         const response = await fetch("https://laravel-api.wasayshaikh.com/api/comments/" + slug, {
             method: "GET",
