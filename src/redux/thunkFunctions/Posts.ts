@@ -48,7 +48,7 @@ export const getNewPost = async () => {
         }
     }
 }
-export const getSinglePost = async (slug:string) => {
+export const getSinglePost = async (slug:string|undefined) => {
      try {
         const response = await fetch("https://laravel-api.wasayshaikh.com/api/posts/"+slug, {
             method: "GET",
