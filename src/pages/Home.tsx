@@ -62,8 +62,8 @@ function Home() {
       },
     ],
   };
-  if (loading || newLoading) return (<><Header /><p>Loading posts...</p></>);
-  if (error || newError) return (<><Header /><p>Error: {error}</p></>);
+  if (loading && newLoading) return (<><Header /><p>Loading posts...</p></>);
+  if (error && newError) return (<><Header /><p>Error: {error}</p></>);
   return (
 
     <>
