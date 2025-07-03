@@ -3,7 +3,7 @@ name: Deploy Vite App via SSH
 on:
   push:
     branches:
-      - main  # Deploy only on push to main
+      - main
 
 jobs:
   deploy:
@@ -29,11 +29,18 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Check SSH key head
+      - name: Display SSH key
         run: |
-          echo "Checking SSH key contents:"
-          head -n 2 ~/.ssh/id_rsa
+          echo "SSH directory content:"
+          ls -la ~/.ssh
+          echo "SSH Key Head:"
+          head -n 5 ~/.ssh/id_rsa || echo "Failed to read SSH key"
+
+      - name: Test SSH connection
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo SSH connection success"
+        continue-on-error: true
 
       - name: Deploy via rsync
         run: |
-          rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/u694311714/domains/wasayshaikh.com/public_html/subdomains/react/
+          rsync -avz -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/u694311714/domains/wasayshaikh.com/public_html/subdomains/react/
