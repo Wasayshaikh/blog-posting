@@ -3,14 +3,14 @@ name: Deploy Vite App via SSH
 on:
   push:
     branches:
-      - main  # Change if your deploy branch is different
+      - main  # or your branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Install dependencies
@@ -22,10 +22,10 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          printf "%s" "${{ secrets.HOSTINGER_SECRET }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.HOSTINGER_SECRET }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
         run: |
-          rsync -avz --delete dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/{{secrets.HOST_FOLDER}}/domains/wasayshaikh.com/public_html/subdomains/react/
+          rsync -avz --delete dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/u694311714/domains/wasayshaikh.com/public_html/subdomains/react/
