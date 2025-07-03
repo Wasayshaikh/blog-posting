@@ -23,7 +23,7 @@ type LogoutPayload = {status:string,message:string}
 // Credentials Types
 type LoginCredentials= { email: string; password: string;}
 type RegisterCredentials ={ email: string; password: string; username: string; name:string }
-type LogoutCredentials={token:string}
+type LogoutCredentials={token:string|null}
 
 export const login = createAsyncThunk<AuthPayload, LoginCredentials,{ rejectValue: AuthError }>("auth/login", async (credentials: { email: string, password: string }, thunkAPI) => {
     try {
@@ -62,7 +62,7 @@ export const register = createAsyncThunk<AuthPayload, RegisterCredentials,{ reje
         }
 
     })
-export const logout = createAsyncThunk<LogoutPayload, LogoutCredentials,{ rejectValue: AuthError }>("auth/logout", async (credentials: { token: string }, thunkAPI) => {
+export const logout = createAsyncThunk<LogoutPayload, LogoutCredentials,{ rejectValue: AuthError }>("auth/logout", async (credentials: { token: string |null }, thunkAPI) => {
     try {
         const response = await fetch("https://laravel-api.wasayshaikh.com/api/logout", {
             method: "POST",
