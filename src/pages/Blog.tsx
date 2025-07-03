@@ -9,10 +9,10 @@ import type { RootState } from '../redux/store';
 function Blog() {
     const isLogged = useSelector((state: RootState) => state.auth.isLogged);
     const logged_username = useSelector((state: RootState) => state.auth.user?.username)
-    const token = useSelector((state:RootState)=> state.auth.token);
+    const token = useSelector((state: RootState) => state.auth.token);
     const { slug } = useParams();
-    const [post, setPost] = useState(null);
-    const [comments, setComments] = useState<Array<object>|null>(null);
+    const [post, setPost] = useState<{ authors: { slug: string, publish_date: string, author: string, metadata: { title: string, content: string } } } | null>(null);
+    const [comments, setComments] = useState<Array<object> | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [commentsLoading, setCommentsLoading] = useState(true);
@@ -21,7 +21,7 @@ function Blog() {
         const getPost = async () => {
             try {
                 const data = await getSinglePost(slug);
-                setPost(data || data); // Adjust based on your API response structure
+                setPost(data.data);
             } catch (err: any) {
                 setError(err.message);
             } finally {
@@ -32,7 +32,7 @@ function Blog() {
         getPost();
         // getComments();
     }, [])
-    const [formData, setFormData] = useState<{content:string,user_name:string|undefined,post_slug:string}>({
+    const [formData, setFormData] = useState<{ content: string, user_name: string | undefined, post_slug: string }>({
         content: "",
         user_name: logged_username,
         post_slug: ""
@@ -41,15 +41,14 @@ function Blog() {
     const getComments = async () => {
         try {
             const data = await getPostComment(slug);
-            setComments(data.comments); // Adjust based on your API response structure
+            setComments(data.comments);
         } catch (err: any) {
             setCommentsError(err.message);
         } finally {
             setCommentsLoading(false);
         }
-        console.log(comments)
     };
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
@@ -58,29 +57,29 @@ function Blog() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        formData.post_slug = post?.data.authors.slug;
-        console.log(formData)
+        formData.post_slug = post?.authors.slug == null ? "" : post?.authors.slug;
         // const result = await dispatch(login(formData));
         // email: "abc@abc.abc", password: "Admin!23456" }
         // const result = dispatch(register(formData))
         // if (register.fulfilled.match(result)) {
         //     navigate('/');
         // }
-        const data = await putPostComment(formData,token);
-        console.log(data)
+        const data = await putPostComment(formData, token);
         if (data) {
-            setComments((prev) => [...prev, data.comments]); 
+            if (data.comments && Array.isArray(data.comments)) {
+                setComments((prev) => [...(prev || []), ...data.comments]);
+            }
             setFormData({
-            content: "",
-            user_name: logged_username,
-            post_slug: ""
-        });
+                content: "",
+                user_name: logged_username,
+                post_slug: ""
+            });
         }
 
 
     };
-    if (loading) return (<><Header /><p>Loading posts...</p></>);
-    if (error) return (<><Header /><p>Error: {error}</p></>);
+    if (loading && commentsLoading) return (<><Header /><p>Loading posts...</p></>);
+    if (error && CommentsError) return (<><Header /><p>Error: {error}</p></>);
 
 
     return (
@@ -97,13 +96,13 @@ function Blog() {
                 <img src="/images/sheet-music-8463988_960_720.jpg" className="w-full rounded-lg mb-6 object-cover" />
 
 
-                <h1 className="text-3xl font-bold mb-2">{post?.data.authors.metadata.title}</h1>
-                <div className="text-sm text-gray-500 mb-10">By <span className="font-medium text-gray-700">{post.data.authors.author}</span> • {post.data.authors.publish_date}</div>
+                <h1 className="text-3xl font-bold mb-2">{post?.authors.metadata.title}</h1>
+                <div className="text-sm text-gray-500 mb-10">By <span className="font-medium text-gray-700">{post?.authors.author}</span> • {post?.authors.publish_date}</div>
 
 
                 <article className="space-y-6 text-lg leading-relaxed">
                     <p>
-                        {post?.data.authors.metadata.content}
+                        {post?.authors.metadata.content}
                     </p>
 
                     <img src="/images/sheet-music-8463988_960_720.jpg" className="w-full rounded-lg" />
