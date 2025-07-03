@@ -3,7 +3,7 @@ name: Deploy Vite App via SSH
 on:
   push:
     branches:
-      - main  # Change this if your deploy branch is different
+      - main  # Deploy only on push to main
 
 jobs:
   deploy:
@@ -22,20 +22,18 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          printf "%s" "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-          
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Check SSH key head
         run: |
           echo "Checking SSH key contents:"
           head -n 2 ~/.ssh/id_rsa
-          
+
       - name: Deploy via rsync
         run: |
-          rsync -avz --delete dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/u694311714/domains/wasayshaikh.com/public_html/subdomains/react/
-
-      # Optional: check deployed folder
-      # - name: SSH Check Deployment
-      #   run: |
-      #     ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "ls -la /home/u694311714/domains/wasayshaikh.com/public_html/subdomains/react/"
+          rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/u694311714/domains/wasayshaikh.com/public_html/subdomains/react/
