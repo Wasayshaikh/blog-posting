@@ -3,7 +3,7 @@ name: Deploy Vite App via SSH
 on:
   push:
     branches:
-      - main  # or your branch
+      - main  # Change this if your deploy branch is different
 
 jobs:
   deploy:
@@ -22,10 +22,20 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.HOSTINGER_SECRET }}" > ~/.ssh/id_rsa
+          printf "%s" "${{ secrets.HOSTINGER_SECRET }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Deploy with rsync
+          
+      - name: Check SSH key head
+        run: |
+          echo "Checking SSH key contents:"
+          head -n 2 ~/.ssh/id_rsa
+          
+      - name: Deploy via rsync
         run: |
           rsync -avz --delete dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/u694311714/domains/wasayshaikh.com/public_html/subdomains/react/
+
+      # Optional: check deployed folder
+      # - name: SSH Check Deployment
+      #   run: |
+      #     ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "ls -la /home/u694311714/domains/wasayshaikh.com/public_html/subdomains/react/"
